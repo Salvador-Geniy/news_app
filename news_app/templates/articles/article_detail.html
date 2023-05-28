@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Article detail</title>
+</head>
+<body>
+<h1>Detail</h1>
+{% csrf_token %}
+{% if article %}
+    <h2>{{ article.title }}</h2>
+    <br>
+    {{ article.text }}
+    <br>
+    <p>Date: {{ now|date }}</p>
+{% else %}
+<p>No article</p>
+{% endif %}
+<br><br>
+<a href="{% url 'articles:articles-all' %}">TO LIST >></a>
+</body>
+</html>

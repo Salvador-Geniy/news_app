@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Articles</title>
+</head>
+<body>
+{% csrf_token %}
+<h1>The News</h1>
+{% if articles %}
+    <ul>
+        {% for article in articles %}
+            <li>
+                <a href="/news/articles-list/{{ article.id }}/">{{ article.title }}</a>
+                <br>
+                Category is: {{ article.category }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No articles at this moment...</p>
+{% endif %}
+<a href="/">To main</a>
+</body>
+</html>
