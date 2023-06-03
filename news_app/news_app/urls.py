@@ -16,10 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from news_app.views import MainView
 
 urlpatterns = [
-    path('', MainView.as_view(), name='main'),
     path('admin/', admin.site.urls),
     path('news/', include('articles.urls')),
     path('users/', include('users.urls')),

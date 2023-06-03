@@ -1,0 +1,7 @@
+<form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete article {{ article }}?</p>
+    <input type="submit" value="Sure">
+</form>
+
+<a href="{% url 'article-detail' article.id %}">Back</a>

@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Article detail</title>
-</head>
-<body>
-<h1>Detail</h1>
-{% csrf_token %}
-{% if article %}
-    <h2>{{ article.title }}</h2>
-    <br>
-    {{ article.text }}
-    <br>
-    <p>Date: {{ now|date }}</p>
-{% else %}
-<p>No article</p>
+
+
+<h2>{{ article.title }}</h2>
+
+<p>{{ article.text }}</p>
+
+<p>Author: {{ article.author }}</p>
+
+<p>Created: {{ article.created_at }}</p>
+
+<!--Лучше не сравнивать id ползователей, а выдать права на изменение-->
+{% if request.user.id == article.author.id %}
+    <a href="{% url 'article-update' article.id %}">Update</a>
+    <a href="{% url 'article-delete' article.id %}">Delete</a>
 {% endif %}
-<br><br>
-<a href="{% url 'articles:articles-all' %}">TO LIST >></a>
-</body>
-</html>
+
+
+
+<p><a href="{% url 'articles' %}">Go Back</a></p>

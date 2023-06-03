@@ -1,25 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Articles</title>
-</head>
-<body>
-{% csrf_token %}
-<h1>The News</h1>
-{% if articles %}
-    <ul>
-        {% for article in articles %}
-            <li>
-                <a href="/news/articles-list/{{ article.id }}/">{{ article.title }}</a>
-                <br>
-                Category is: {{ article.category }}
-            </li>
+
+<div class="header-bar">
+    <div class="header-bar__logo">Logo</div>
+    <div class="header-bar__categories">
+        {% for category in categories %}
+            <a href="#">{{ category.name }}</a>
         {% endfor %}
-    </ul>
+    </div>
+    <div class="header-bar__user">
+        {% if user.is_authenticated %}
+            <p>Hi, {{ user.username }}</p>
+            <a href="#">Logout</a>
+        {% else %}
+            <a href="#">Login/Register</a>
+        {% endif %}
+
+    </div>
+</div>
+
+<hr>
+
+<h1>The News</h1>
+
+
+<h3>News list</h3>
+{% if articles %}
+    {% for article in articles %}
+        <div>
+            <a href="{% url 'article-detail' article.id %}">{{ article.title }}</a>
+        </div>
+    {% endfor %}
 {% else %}
     <p>No articles at this moment...</p>
 {% endif %}
-<a href="/">To main</a>
-</body>
-</html>
+
+
+<p><a href="{% url 'add-article' %}">Add article</a></p>
+
