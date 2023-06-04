@@ -4,6 +4,11 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from articles.models import Article, Category
 
 
+class CategoryDetailView(DetailView):
+    model = Category
+    context_object_name = 'category'
+
+
 class ArticleListView(ListView):
     model = Article
     template_name = 'article_list.html'
