@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView
 
 from users.forms import UserRegistrationForm
 
@@ -35,31 +35,14 @@ class UserRegistrationView(FormView):
         return super(UserRegistrationView, self).get(*args, **kwargs)
 
 
+class UserAccountView(DetailView):
+    model = User
+    # queryset = User.objects.all().prefetch_related('my_articles')
+    context_object_name = 'user'
+    template_name = 'users/user-detail.html'
 
+    def get_queryset(self, *args, **kwargs):
+        queryset = User.objects.filter(id=self.kwargs['pk']).prefetch_related('my_articles').all()
+        return queryset
 
-    # def get(self, request):
-    #     if self.user.is_authenticated:
-    #         return redirect('articles')
-    #     form = UserRegistrationForm()
-    #     return render(request, 'users/registration.html', context={'form': form})
-    #
-    # def post(self, request):
-    #     form = UserRegistrationForm(request.POST)
-    #     if form.is_valid():
-    #         form.cleaned_data['group'] = 'Readers'
-    #         user = form.save()
-    #
-    #         group = Group.objects.get_or_create(name='Readers')
-    #         if group:
-    #             group.user_set.add(user)
-    #
-    #         username = form.cleaned_data['username']
-    #         raw_password = form.cleaned_data['password1']
-    #
-    #         user = authenticate(
-    #             username=username,
-    #             password=raw_password
-    #         )
-    #         login(request, user)
-    #         return redirect('/news')
 

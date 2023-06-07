@@ -1,6 +1,24 @@
 {% extends 'main.html' %}
 {% block content %}
 
+<div class="header-bar">
+    <div class="header-bar__logo">Logo</div>
+    <div class="header-bar__categories">
+        {% for category in categories %}
+            <a href="{% url 'category-detail' category.id %}">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+    <div class="header-bar__user">
+        {% if user.is_authenticated %}
+            <p>Hi, {{ user.username }}</p>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login/Register</a>
+        {% endif %}
+
+    </div>
+</div>
+
 <h2>{{ article.title }}</h2>
 
 <p>{{ article.text }}</p>
@@ -8,13 +26,6 @@
 <p>Author: {{ article.author }}</p>
 
 <p>Created: {{ article.created_at }}</p>
-
-<!--Лучше не сравнивать id ползователей, а выдать права на изменение-->
-{% if request.user.id == article.author.id %}
-    <a href="{% url 'article-update' article.id %}">Update</a>
-    <a href="{% url 'article-delete' article.id %}">Delete</a>
-{% endif %}
-
 
 
 <p><a href="{% url 'articles' %}">Go Back</a></p>

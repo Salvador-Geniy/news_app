@@ -5,7 +5,7 @@ from articles.models import Article, Category
 
 
 class CategoryDetailView(DetailView):
-    model = Category
+    queryset = Category.objects.all().prefetch_related('articles')
     context_object_name = 'category'
 
 
@@ -14,7 +14,7 @@ class ArticleListView(ListView):
     template_name = 'article_list.html'
     context_object_name = 'articles'
 
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
@@ -46,4 +46,3 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'article'
     template_name_suffix = '_delete'
     success_url = reverse_lazy('articles')
-
