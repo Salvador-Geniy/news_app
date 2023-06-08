@@ -1,26 +1,6 @@
 {% extends 'main.html' %}
 {% block content %}
 
-<div class="header-bar">
-    <div class="header-bar__logo">Logo</div>
-    <div class="header-bar__categories">
-        {% for category in categories %}
-            <a href="{% url 'category-detail' category.id %}">{{ category.name }}</a>
-        {% endfor %}
-    </div>
-    <div class="header-bar__user">
-        {% if user.is_authenticated %}
-            <p>Hi, {{ user.username }}</p>
-            <a href="{% url 'account' user.id %}">account</a>
-            <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-            <a href="{% url 'login' %}">Login/Register</a>
-        {% endif %}
-
-    </div>
-</div>
-
-<hr>
 
 <h1>The News</h1>
 
@@ -36,7 +16,6 @@
     <p>No articles at this moment...</p>
 {% endif %}
 
-<p><a href="{% url 'add-article' %}">Add article</a></p>
 
 {% endblock content %}
 

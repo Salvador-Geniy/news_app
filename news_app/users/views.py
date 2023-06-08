@@ -1,9 +1,8 @@
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User, Group
+from django.contrib.auth import login
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView
 
 from users.forms import UserRegistrationForm
 
@@ -33,16 +32,3 @@ class UserRegistrationView(FormView):
         if self.request.user.is_authenticated:
             return redirect('/news/')
         return super(UserRegistrationView, self).get(*args, **kwargs)
-
-
-class UserAccountView(DetailView):
-    model = User
-    # queryset = User.objects.all().prefetch_related('my_articles')
-    context_object_name = 'user'
-    template_name = 'users/user-detail.html'
-
-    def get_queryset(self, *args, **kwargs):
-        queryset = User.objects.filter(id=self.kwargs['pk']).prefetch_related('my_articles').all()
-        return queryset
-
-

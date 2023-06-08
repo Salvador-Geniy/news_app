@@ -1,0 +1,20 @@
+{% extends 'main.html' %}
+{% block content %}
+
+
+{% if articles %}
+    {% for article in articles %}
+        <div>
+            <a href="{% url 'article-detail' article.id %}">{{ article.title }}</a>
+            <a href="{% url 'article-update' article.id %}">Update</a>
+            <a href="{% url 'article-delete' article.id %}">Delete</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No articles</p>
+{% endif %}
+
+<p><a href="{% url 'add-article' %}">Add article</a></p>
+<a href="{% url 'articles' %}">Go To Main</a>
+
+{% endblock content %}

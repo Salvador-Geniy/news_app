@@ -10,7 +10,7 @@ class CategoryDetailView(DetailView):
 
 
 class ArticleListView(ListView):
-    model = Article
+    queryset = Article.objects.all().order_by('-created_at')
     template_name = 'article_list.html'
     context_object_name = 'articles'
 
@@ -18,6 +18,15 @@ class ArticleListView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
+
+
+class ArticleUserListView(LoginRequiredMixin, ListView):
+    model = Article
+    template_name_suffix = '_user_list'
+    context_object_name = 'articles'
+
+    def get_queryset(self):
+        return Article.objects.filter(author=self.request.user).order_by('-created_at')
 
 
 class ArticleDetailView(DetailView):
