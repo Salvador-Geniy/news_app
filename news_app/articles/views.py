@@ -5,8 +5,13 @@ from articles.models import Article, Category
 
 
 class CategoryDetailView(DetailView):
-    queryset = Category.objects.all().prefetch_related('articles')
+    model = Category
     context_object_name = 'category'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['articles'] = Article.objects.filter(category=self.kwargs['pk']).order_by('-created_at')
+        return context
 
 
 class ArticleListView(ListView):
@@ -21,7 +26,7 @@ class ArticleListView(ListView):
 
 
 class ArticleUserListView(LoginRequiredMixin, ListView):
-    model = Article
+    # model = Article
     template_name_suffix = '_user_list'
     context_object_name = 'articles'
 
