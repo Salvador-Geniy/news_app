@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from articles.models import Article, Category
@@ -26,9 +26,9 @@ class ArticleListView(ListView):
 
 
 class ArticleUserListView(LoginRequiredMixin, ListView):
-    # model = Article
     template_name_suffix = '_user_list'
     context_object_name = 'articles'
+    login_url = reverse_lazy('articles')
 
     def get_queryset(self):
         return Article.objects.filter(author=self.request.user).order_by('-created_at')
@@ -43,6 +43,7 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     fields = ['title', 'text', 'category']
     success_url = reverse_lazy('articles')
+    login_url = reverse_lazy('articles')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -53,6 +54,7 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
     fields = ['title', 'text']
     success_url = reverse_lazy('articles')
+    login_url = reverse_lazy('articles')
 
 
 class ArticleDeleteView(LoginRequiredMixin, DeleteView):
@@ -60,3 +62,4 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'article'
     template_name_suffix = '_delete'
     success_url = reverse_lazy('articles')
+    login_url = reverse_lazy('articles')
