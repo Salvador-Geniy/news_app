@@ -4,6 +4,13 @@
 
 <h1>The News</h1>
 
+<div class="search-add-wrapper">
+    <form class="search-add-wrapper__form" method="get">
+        <input class="search-add-wrapper__form-text" type="text" name="search-area" value="{{ search_input }}">
+        <input class="button" type="submit" value="Search">
+    </form>
+</div>
+
 
 <h3>News list</h3>
 {% if articles %}
