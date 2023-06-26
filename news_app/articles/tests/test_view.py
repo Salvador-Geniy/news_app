@@ -51,6 +51,7 @@ class AccountTestCase(TestCase):
     def setUp(self):
         self.user_1 = User.objects.create(username='test user 1')
         self.user_2 = User.objects.create(username='test user 2')
+        self.user_admin = User.objects.create(username='test admin', is_superuser=True)
         self.category_1 = Category.objects.create(name='test category 1')
         self.category_2 = Category.objects.create(name='test category 2')
         self.article_1 = Article.objects.create(author=self.user_1, title='test article 1',
@@ -108,16 +109,40 @@ class AccountTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(response.context['object_list'], expected_data)
 
-    def update_page_exist_at_desired_location(self):
+    def test_update_page_exist_at_desired_location(self):
         url = reverse('article-update', args=(self.article_1.id,))
         self.client.force_login(self.user_1)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    def update_page_does_not_work_for_non_author_article(self):
+    def test_update_page_does_not_work_for_non_author_article(self):
         url = reverse('article-update', args=(self.article_1.id,))
         self.client.force_login(self.user_2)
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, '/news/?next=/news/list/')
+        self.assertRedirects(response, '/news/')
 
+    def test_update_page_work_for_non_author_article_but_admin(self):
+        url = reverse('article-update', args=(self.article_3.id,))
+        self.client.force_login(self.user_admin)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_page_exist_at_desired_location(self):
+        url = reverse('article-delete', args=(self.article_1.id,))
+        self.client.force_login(self.user_1)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_page_does_not_work_for_non_author_article(self):
+        url = reverse('article-delete', args=(self.article_3.id,))
+        self.client.force_login(self.user_1)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/news/')
+
+    def test_delete_page_work_for_non_author_article_but_admin(self):
+        url = reverse('article-delete', args=(self.article_3.id,))
+        self.client.force_login(self.user_admin)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
