@@ -1,17 +1,25 @@
 {% extends 'main.html' %}
+{% load static %}
 {% block content %}
 
 
 
-<h2>{{ article.title }}</h2>
+<div class="article-detail">
+    <h2>{{ article.title }}</h2>
+    {% if article.picture %}
+        <img src="{{ article.picture }}" alt="">
+    {% else %}
+        <img src="{% static 'images/articles/no-image-icon-23485.png' %}" alt="No picture">
+    {% endif %}
 
-<p>{{ article.text }}</p>
+    <p>{{ article.text }}</p>
 
-<p>Author: {{ article.author }}</p>
+    <p>Author: {{ article.author }}</p>
 
-<p>Created: {{ article.created_at }}</p>
+    <p>Created: {{ article.created_at }}</p>
+</div>
 
 
-<p><a href="{% url 'articles' %}">Go Main</a></p>
+<a href="{% url 'articles' %}">Go Main</a>
 
 {% endblock content %}

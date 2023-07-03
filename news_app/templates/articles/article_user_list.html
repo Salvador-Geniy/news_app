@@ -1,4 +1,5 @@
 {% extends 'main.html' %}
+{% load static %}
 {% block content %}
 
 <h2>Your published news</h2>
@@ -17,6 +18,13 @@
 <div>
     {% if articles %}
         {% for article in articles %}
+            <div>
+                {% if article.picture %}
+                    <img src="{{ article.picture }}" alt="">
+                {% else %}
+                    <img src="{% static 'images/articles/no-image-icon-23485.png' %}" alt="No picture">
+                {% endif %}
+            </div>
             <div>
                 <a href="{% url 'article-detail' article.id %}">{{ article.title }}</a>
                 <a href="{% url 'article-update' article.id %}">Update</a>
